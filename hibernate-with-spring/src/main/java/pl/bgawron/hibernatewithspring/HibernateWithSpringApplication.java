@@ -33,6 +33,13 @@ public class HibernateWithSpringApplication {
         e2.setLastName("Kowalski");
         employeeDAO.addEmployee(e2);
 
+        employeeDAO.deleteEmployee(e1);
+        employeeDAO.getAllEmployee();
+
+        e2.setFirstName("Marek");
+        e2.setLastName("Makowiecki");
+        employeeDAO.updateEmployee(e2);
+
         //Wersja z Spring Data JPA i własnym mapowaniem obiektów
         Cat c1 = new Cat();
         c1.setName("Mruczek");
