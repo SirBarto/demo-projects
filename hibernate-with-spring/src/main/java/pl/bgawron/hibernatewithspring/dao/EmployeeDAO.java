@@ -20,6 +20,7 @@ public class EmployeeDAO {
     {
         Session session = hibernateFactory.getSessionFactory().openSession();
         Transaction transaction = session.beginTransaction();
+
         try
         {
             List<Employee> result = session.createQuery("Select a from Employee a",Employee.class).list();
@@ -70,7 +71,7 @@ public class EmployeeDAO {
         }
     }
 
-    public void addEmployee(Employee employee)
+    public Employee addEmployee(Employee employee)
     {
         Session session = hibernateFactory.getSessionFactory().openSession();
         Transaction transaction = session.beginTransaction();
@@ -91,6 +92,7 @@ public class EmployeeDAO {
             session.close();
             hibernateFactory.getSessionFactory().close();
         }
+        return employee;
     }
 
     public void updateEmployee(Employee employee)
@@ -102,13 +104,15 @@ public class EmployeeDAO {
         {
             String getEmployeeById = "Select e FROM Employee e WHERE id=:id";
 
+            String hql = "UPDATE Employee e set e.firstName=:firstName, e.lastName=:lastName, e.gender=:gender WHERE e.id=:id";
 
-            String hql = "UPDATE Employee set firstName=:firstName, lastName=:lastName WHERE id =:id";
             Query query = session.createQuery(hql);
             query.setParameter("firstName",employee.getFirstName());
             query.setParameter("lastName",employee.getLastName());
+            query.setParameter("gender",employee.getGender());
+            query.setParameter("id",employee.getId());
             int result = query.executeUpdate();
-            //session.update(employee);
+            session.update(employee);
             System.out.println("Rows affected: "+result);
             session.getTransaction().commit();
         }
@@ -135,13 +139,16 @@ public class EmployeeDAO {
         try
         {
             Employee employee = session.get(Employee.class, id);
-            session.delete(employee);
-            System.out.println("Successful deleted Employee: "+employee+" by id: "+id);
+            if(employee == null){
+                System.out.println("Error Employee by id: "+id+" doesnt exists");
+            }else {
+                session.delete(employee);
+                System.out.println("Successful deleted Employee: " + employee + " by id: " + id);
+            }
             session.getTransaction().commit();
         }
         catch (Exception e)
         {
-            System.out.println("Delete method Employee by id: "+id+" doesnt exists");
             transaction.rollback();
             e.printStackTrace();
             throw new RuntimeException(e);
