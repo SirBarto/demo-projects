@@ -20,7 +20,7 @@ public class Employee {
     private Gender gender;
 
     @CreatedDate
-    @Column(name = "created_data", nullable = false, updatable = false)
+    @Column(name = "createdDate", nullable = false, updatable = false)
     private Date createdAt;
 
     public Employee() {
