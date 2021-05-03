@@ -8,7 +8,9 @@ import pl.bgawron.hibernatewithspring.dao.EmployeeDAO;
 import pl.bgawron.hibernatewithspring.model.Cat;
 import pl.bgawron.hibernatewithspring.model.Dog;
 import pl.bgawron.hibernatewithspring.model.Employee;
+import pl.bgawron.hibernatewithspring.model.Gender;
 
+import java.util.Date;
 import java.util.Optional;
 
 @SpringBootApplication
@@ -26,19 +28,28 @@ public class HibernateWithSpringApplication {
         Employee e1 = new Employee();
         e1.setFirstName("Jan");
         e1.setLastName("Nowak");
+        e1.setGender(Gender.MALE);
+        e1.setCreatedAt(new Date());
         employeeDAO.addEmployee(e1);
 
         Employee e2 = new Employee();
         e2.setFirstName("Mietek");
         e2.setLastName("Kowalski");
+        e2.setGender(Gender.MALE);
+        e2.setCreatedAt(new Date());
         employeeDAO.addEmployee(e2);
 
-        employeeDAO.deleteEmployee(e1);
         employeeDAO.getAllEmployee();
+        employeeDAO.deleteEmployee(50);
 
         e2.setFirstName("Marek");
         e2.setLastName("Makowiecki");
-        employeeDAO.updateEmployee(e2);
+        e2.setGender(Gender.MALE);
+       // employeeDAO.updateEmployee(e2);
+
+        Optional<Employee> e4 = employeeDAO.getById(45);
+        System.out.println("e4: "+e4.get().getFirstName()+" "+e4.get().getLastName()+" "+e4.get().getGender());
+        System.out.println("e4 (toString): "+e4.toString());
 
         //Wersja z Spring Data JPA i własnym mapowaniem obiektów
         Cat c1 = new Cat();
