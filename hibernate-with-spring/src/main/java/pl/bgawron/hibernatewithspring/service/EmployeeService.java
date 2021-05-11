@@ -1,25 +1,19 @@
 package pl.bgawron.hibernatewithspring.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import pl.bgawron.hibernatewithspring.dao.EmployeeDAO;
+import pl.bgawron.hibernatewithspring.dto.EmployeeDTO;
 import pl.bgawron.hibernatewithspring.model.Employee;
 
+import java.util.List;
 import java.util.Optional;
 
-@Service
-public class EmployeeService {
+public interface EmployeeService {
 
-    private final EmployeeDAO employeeDAO;
+    List<EmployeeDTO> getAllEmployees();
 
-    @Autowired
-    public EmployeeService(EmployeeDAO employeeDAO) {
-        this.employeeDAO = employeeDAO;
-    }
+    Optional<EmployeeDTO> findById(Long id);
 
-    public Optional<Employee> findById(long id)
-    {
-        return employeeDAO.getById(id);
-    }
+    Employee createEmployee(EmployeeDTO employeeDTO);
 
+    Employee updateEmployee(Employee employeeDetails);
+    void deleteEmployee(Employee employee);
 }
