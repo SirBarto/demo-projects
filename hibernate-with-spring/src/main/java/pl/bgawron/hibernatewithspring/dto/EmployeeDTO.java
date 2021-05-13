@@ -1,18 +1,14 @@
 package pl.bgawron.hibernatewithspring.dto;
 
-import pl.bgawron.hibernatewithspring.model.Employee;
 import pl.bgawron.hibernatewithspring.model.Gender;
 
 import java.io.Serializable;
-import java.util.Date;
-
 public class EmployeeDTO implements Serializable
 {
 
     private Long id;
     private String firstName, lastName;
     private final Gender gender;
-    private Date createAt;
 
     /**
      * @param firstName Employee firstName
@@ -20,11 +16,10 @@ public class EmployeeDTO implements Serializable
      * @param gender Gender gender
      */
 
-    public EmployeeDTO(String firstName, String lastName, Gender gender, Date createAt) {
+    public EmployeeDTO(String firstName, String lastName, Gender gender) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.gender = gender;
-        this.createAt = createAt;
     }
 
     public Long getId() {
@@ -53,14 +48,6 @@ public class EmployeeDTO implements Serializable
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
-    }
-
-    public Date getCreateAt() {
-        return createAt;
-    }
-
-    public void setCreateAt(Date createAt) {
-        this.createAt = createAt;
     }
 
     @Override

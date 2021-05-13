@@ -1,15 +1,19 @@
 package pl.bgawron.hibernatewithspring.repository;
 
+import org.apache.commons.logging.Log;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Repository;
 import pl.bgawron.hibernatewithspring.config.HibernateFactory;
 import pl.bgawron.hibernatewithspring.repository.dao.EmployeeDAO;
 import pl.bgawron.hibernatewithspring.model.Employee;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
+import java.util.logging.Logger;
 
 @Repository
 public class EmployeeDAOImpl implements EmployeeDAO {
@@ -52,8 +56,7 @@ public class EmployeeDAOImpl implements EmployeeDAO {
             Employee employee = session.createQuery(hql, Employee.class)
                     .setParameter("id", id).uniqueResult();
 
-            //Employee employee = session.find(Employee.class,id);
-
+           // Employee employee = session.find(Employee.class,id);
             session.getTransaction().commit();
             return Optional.ofNullable(employee);
         }
@@ -95,26 +98,25 @@ public class EmployeeDAOImpl implements EmployeeDAO {
         return employee;
     }
 
-    public void updateEmployee(Employee employee)
+    @Transactional
+    @Modifying
+    public Employee updateEmployee(Employee employee)
     {
         Session session = hibernateFactory.getSessionFactory().openSession();
         Transaction transaction = session.beginTransaction();
 
         try
         {
-            String getEmployeeById = "Select e FROM Employee e WHERE id=:id";
-
-           /* String hql = "UPDATE Employee e set e.firstName=:firstName, e.lastName=:lastName, e.gender=:gender WHERE e.id=:id";
+            String hql = "UPDATE Employee e set e.firstName=:firstName, e.lastName=:lastName WHERE e.id=:id";
 
             Query query = session.createQuery(hql);
             query.setParameter("firstName",employee.getFirstName());
             query.setParameter("lastName",employee.getLastName());
-            query.setParameter("gender",employee.getGender());
             query.setParameter("id",employee.getId());
             int result = query.executeUpdate();
-            */
-            session.update(employee);
-            //System.out.println("Rows affected: "+result);
+
+            //session.update(employee);
+            System.out.println("Rows affected: "+result);
             session.getTransaction().commit();
         }
         catch (Exception e)
@@ -128,8 +130,11 @@ public class EmployeeDAOImpl implements EmployeeDAO {
             session.close();
             hibernateFactory.getSessionFactory().close();
         }
+        return employee;
     }
 
+    @Transactional
+    @Modifying
     public void deleteEmployee(Employee employee)
     {
         Session session = hibernateFactory.getSessionFactory().openSession();
@@ -154,6 +159,5 @@ public class EmployeeDAOImpl implements EmployeeDAO {
             hibernateFactory.getSessionFactory().close();
         }
     }
-
 
 }

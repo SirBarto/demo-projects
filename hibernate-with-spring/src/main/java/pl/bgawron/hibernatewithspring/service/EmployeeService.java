@@ -10,10 +10,13 @@ public interface EmployeeService {
 
     List<EmployeeDTO> getAllEmployees();
 
-    Optional<EmployeeDTO> findById(Long id);
+    Optional<EmployeeDTO> findEmployeeById(Long id);
+
+    Optional<Employee> getEmployeeId(Long id);
 
     Employee createEmployee(EmployeeDTO employeeDTO);
 
     Employee updateEmployee(Employee employeeDetails);
+
     void deleteEmployee(Employee employee);
 }

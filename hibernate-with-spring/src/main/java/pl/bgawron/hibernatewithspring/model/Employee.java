@@ -23,10 +23,10 @@ public class Employee {
     @Column(name = "createdDate", nullable = false, updatable = false)
     private Date createdAt;
 
-    public Employee() {
-    }
+    public Employee() { }
 
-    public Employee(String firstName, String lastName, Gender gender,Date createAt) {
+    public Employee(String firstName, String lastName, Gender gender,Date createAt)
+    {
         this.firstName = firstName;
         this.lastName = lastName;
         this.gender = gender;

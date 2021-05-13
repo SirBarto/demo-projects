@@ -6,6 +6,8 @@ import pl.bgawron.hibernatewithspring.dto.EmployeeDTO;
 import pl.bgawron.hibernatewithspring.repository.EmployeeDAOImpl;
 import pl.bgawron.hibernatewithspring.model.Employee;
 
+import java.sql.Date;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -27,34 +29,41 @@ public class EmployeeServiceImpl implements EmployeeService{
 
         for(Employee emp : employees)
         {
-            list.add(new EmployeeDTO(emp.getFirstName(),
-                    emp.getLastName(),emp.getGender(),emp.getCreatedAt()));
+            list.add(new EmployeeDTO(
+                    emp.getFirstName(),
+                    emp.getLastName(),
+                    emp.getGender()
+            ));
         }
-
         return list;
     }
 
-    public Optional<EmployeeDTO> findById(Long id)
+    public Optional<EmployeeDTO> findEmployeeById(Long id)
     {
         Optional<Employee> employee = this.employeeDAOImpl.getById(id);
         Employee emp = employee.get();
 
-        return Optional.of(new EmployeeDTO(emp.getFirstName(),
-                emp.getLastName(),emp.getGender(),emp.getCreatedAt()));
+        return Optional.of(new EmployeeDTO(
+                emp.getFirstName(),
+                emp.getLastName(),
+                emp.getGender()
+        ));
     }
 
     public Employee createEmployee(EmployeeDTO employeeDTO)
     {
-        return this.employeeDAOImpl.addEmployee(
-                new Employee(employeeDTO.getFirstName(),
-                        employeeDTO.getLastName(),employeeDTO.getGender(),employeeDTO.getCreateAt())
-        );
+        return this.employeeDAOImpl.addEmployee(new Employee(
+                employeeDTO.getFirstName(),
+                employeeDTO.getLastName(),
+                employeeDTO.getGender(),
+                Date.valueOf(LocalDate.now())
+        ));
     }
 
     public Employee updateEmployee(Employee employeeDetails)
     {
-        //return this.employeeDAOImpl.updateEmployee(employeeDetails);
-        return this.employeeDAOImpl.addEmployee(employeeDetails);
+        return this.employeeDAOImpl.updateEmployee(employeeDetails);
+        //return this.employeeDAOImpl.addEmployee(employeeDetails);
     }
 
     public void deleteEmployee(Employee employee)
@@ -62,4 +71,12 @@ public class EmployeeServiceImpl implements EmployeeService{
         this.employeeDAOImpl.deleteEmployee(employee);
     }
 
+    public Optional<Employee> getEmployeeId(Long id)
+    {
+
+        Optional<Employee> employee = this.employeeDAOImpl.getById(id);
+        Employee emp = employee.get();
+
+        return Optional.of(emp);
+    }
 }
