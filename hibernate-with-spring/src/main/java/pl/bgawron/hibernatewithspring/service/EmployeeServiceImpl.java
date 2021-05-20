@@ -3,9 +3,11 @@ package pl.bgawron.hibernatewithspring.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.bgawron.hibernatewithspring.dto.EmployeeDTO;
+import pl.bgawron.hibernatewithspring.exception.status.NotFoundException;
 import pl.bgawron.hibernatewithspring.repository.EmployeeDAOImpl;
 import pl.bgawron.hibernatewithspring.model.Employee;
 
+import javax.persistence.EntityNotFoundException;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -38,9 +40,11 @@ public class EmployeeServiceImpl implements EmployeeService{
         return list;
     }
 
-    public Optional<EmployeeDTO> findEmployeeById(Long id)
+    public Optional<EmployeeDTO> findEmployeeById(Long id) throws NotFoundException
     {
-        Optional<Employee> employee = this.employeeDAOImpl.getById(id);
+        Optional<Employee> employee = Optional.of(this.employeeDAOImpl.getById(id)
+                .orElseThrow(() -> new NotFoundException("No employee with such id: " + id)));
+
         Employee emp = employee.get();
 
         return Optional.of(new EmployeeDTO(
