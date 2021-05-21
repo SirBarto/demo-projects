@@ -1,15 +1,19 @@
 package pl.bgawron.hibernatewithspring.model;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
 import java.util.Date;
 import java.util.Objects;
 
+@ApiModel("Data of Employee")
 @Entity
 @Table(name = "TBL_EMPLOYEE")
 public class Employee {
 
+    @ApiModelProperty("unique id of employee")
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

@@ -1,5 +1,7 @@
 package pl.bgawron.hibernatewithspring.api;
 
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -30,8 +32,9 @@ public class EmployeeApi {
         return ResponseEntity.ok().body(employeeServiceImpl.getAllEmployees());
     }
 
+    @ApiOperation(value = "Find employee by id",notes = "provide information about employee by id")
     @GetMapping("/employee/{id}")
-    public ResponseEntity<EmployeeDTO> findEmployeeById(@PathVariable(value = "id") Long id)
+    public ResponseEntity<EmployeeDTO> findEmployeeById(@ApiParam(value = "unique id of employee",example = "1") @PathVariable(value = "id") Long id)
     {
         return ResponseEntity.ok().body(employeeServiceImpl.findEmployeeById(id).get());
     }
